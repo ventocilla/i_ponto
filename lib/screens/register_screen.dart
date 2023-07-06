@@ -88,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             )
                           : ElevatedButton(
                               onPressed: () {
-                                authServiceProvider.register(
+                                authServiceProvider.registerEmployee(
                                     _emailController.text.trim(),
                                     _passwordController.text.trim(),
                                     context);

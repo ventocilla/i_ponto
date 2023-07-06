@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
                               onPressed: () {
-                                authServiceProvider.signIn(
+                                authServiceProvider.loginEmployee(
                                     _emailController.text.trim(),
                                     _passwordController.text.trim(),
                                     context);
