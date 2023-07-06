@@ -14,7 +14,7 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> registerEmployee(
+  Future<void> register(
       String email, String password, BuildContext context) async {
     try {
       setIsLoading = true;
@@ -32,4 +32,27 @@ class AuthService extends ChangeNotifier {
       Utils.showSnackBar(e.toString(), context, color: Colors.red);
     }
   }
+
+  Future<void> signIn(
+      String email, String password, BuildContext context) async {
+    try {
+      setIsLoading = true;
+      if (email == '' || email == '') {
+        throw ('All fields are required');
+      }
+      final AuthResponse response = await _supabase.auth
+          .signInWithPassword(email: email, password: password);
+      setIsLoading = false;
+    } catch (e) {
+      setIsLoading = false;
+      Utils.showSnackBar(e.toString(), context, color: Colors.red);
+    }
+  }
+
+  Future signOut() async {
+    await _supabase.auth.signOut();
+    notifyListeners();
+  }
+
+  User? get currentUser => _supabase.auth.currentUser;
 }
