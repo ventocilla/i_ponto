@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:i_ponto/screens/attendence_screen.dart';
+import 'package:i_ponto/screens/calendar_screen.dart';
+import 'package:i_ponto/screens/profile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,8 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: Text('Home Screen'),
+      body: IndexedStack(
+        index: currentIndex,
+        children: const [
+          CalendarScreen(),
+          AttendanceScreen(),
+          ProfileScreen(),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
