@@ -11,7 +11,7 @@ class SpalshScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
-    authService.signOut();
+    //authService.signOut();
     return authService.currentUser == null
         ? const LoginScreen()
         : const HomeScreen();
