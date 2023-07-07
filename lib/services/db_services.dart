@@ -18,7 +18,7 @@ class DbService extends ChangeNotifier {
   }
 
   Future insertNewUser(String email, var id) async {
-    await _supabase.from(Constants.departmentTable).insert({
+    await _supabase.from(Constants.employeeTable).insert({
       'id': id,
       'name': '',
       'email': email,
