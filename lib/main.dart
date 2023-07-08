@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'screens/splash_screen.dart';
+import 'services/attendance_services.dart';
 import 'services/db_services.dart';
 
 void main() async {
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => DbService(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AttendanceService(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
