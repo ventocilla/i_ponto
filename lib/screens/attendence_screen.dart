@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:i_ponto/models/user_model.dart';
+import 'package:i_ponto/services/attendance_services.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_to_confirm/slide_to_confirm.dart';
 
@@ -15,12 +16,19 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
+  @override
+  void initState() {
+    Provider.of<AttendanceService>(context, listen: false).getTodayAttendance();
+    super.initState();
+  }
+
   void confirmed() {
-    //print('Slider confirmed!');
+    print('Slider confirmed!');
   }
 
   @override
   Widget build(BuildContext context) {
+    final attendanceService = Provider.of<AttendanceService>(context);
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -91,7 +99,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 ],
                 borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -100,11 +108,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Check In',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.black54)),
-                        SizedBox(width: 20),
-                        Text('09:30', style: TextStyle(fontSize: 25)),
+                        const Text(
+                          'Check In',
+                          style: TextStyle(fontSize: 20, color: Colors.black54),
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                            attendanceService.attendanceModel?.checkIn ??
+                                '--/--',
+                            style: const TextStyle(fontSize: 25)),
                       ],
                     ),
                   ),
@@ -113,11 +125,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Check Out',
+                        const Text('Check Out',
                             style:
                                 TextStyle(fontSize: 20, color: Colors.black54)),
-                        SizedBox(width: 20),
-                        Text('--/--', style: TextStyle(fontSize: 25)),
+                        const SizedBox(width: 20),
+                        Text(
+                          attendanceService.attendanceModel?.checkOut ??
+                              '--/--',
+                          style: const TextStyle(fontSize: 25),
+                        ),
                       ],
                     ),
                   ),
@@ -143,12 +159,17 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               child: Builder(
                 builder: (context) {
                   return ConfirmationSlider(
-                    text: 'Slide to Check',
+                    text: attendanceService.attendanceModel?.checkIn == null
+                        ? 'Slide to Check In '
+                        : 'Slide to Check Out',
                     textStyle: const TextStyle(
                       color: Colors.black54,
                       fontSize: 18,
                     ),
-                    onConfirmation: () => confirmed(),
+                    onConfirmation: () async {
+                      confirmed();
+                      await attendanceService.markAttendance(context);
+                    },
                     foregroundColor: Colors.redAccent, // default: blueAccent
                   );
                 },
