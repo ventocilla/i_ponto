@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:i_ponto/models/user_model.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_to_confirm/slide_to_confirm.dart';
+
+import '../services/db_services.dart';
 
 // https://pub.dev/packages/slide_to_confirm
 
@@ -30,13 +34,41 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 style: TextStyle(color: Colors.black54, fontSize: 30),
               ),
             ),
+
+            ///*
+            Consumer<DbService>(builder: (context, dbServie, child) {
+              return FutureBuilder(
+                  future: dbServie.getUserData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      UserModel user = snapshot.data!;
+
+                      return Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          user.name != '' ? user.name : "#${user.employeeId}",
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                      );
+                    } else {
+                      print('No data');
+                    }
+                    return const SizedBox(
+                      width: 60,
+                      child: LinearProgressIndicator(),
+                    );
+                  });
+            }),
+            //*/
+            /*
             Container(
               alignment: Alignment.centerLeft,
               child: const Text(
-                'Employee Name',
+                "Name",
                 style: TextStyle(fontSize: 25),
               ),
             ),
+            */
             Container(
               alignment: Alignment.centerLeft,
               margin: const EdgeInsets.only(top: 32),
