@@ -1,12 +1,13 @@
 import 'dart:math';
 
-import 'package:i_ponto/constants/constants.dart';
-import 'package:i_ponto/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../constants/constants.dart';
 import '../models/department_model.dart';
+import '../models/user_model.dart';
+import '../utils/utils.dart';
 
 class DbService extends ChangeNotifier {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -75,5 +76,21 @@ class DbService extends ChangeNotifier {
     print('Result: $result');
     print('All Departments: $allDepartments');
     notifyListeners();
+  }
+
+  Future updateProfile(String name, BuildContext context) async {
+    await _supabase.from(Constants.employeeTable).update({
+      'name': name,
+      'department': employeeDepartment,
+    }).eq('id', _supabase.auth.currentUser!.id);
+
+    if (context.mounted) {
+      Utils.showSnackBar(
+        'Profile updated succesfully',
+        context,
+        color: Colors.green,
+      );
+      notifyListeners();
+    }
   }
 }
