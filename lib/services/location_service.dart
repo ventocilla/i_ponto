@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:i_ponto/utils/utils.dart';
 import 'package:location/location.dart';
@@ -41,3 +42,4 @@ class LocationService {
     return {'latitude': _locData.latitude, 'longitude': _locData.longitude};
   }
 }
+*/

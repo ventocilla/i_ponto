@@ -44,6 +44,7 @@ class AttendanceService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /*
   Future markAttendance(BuildContext context) async {
     Map? getLocation =
         await LocationService().initializeAndGetLocation(context);
@@ -71,6 +72,36 @@ class AttendanceService extends ChangeNotifier {
       }
       getTodayAttendance();
     }
+  }
+  */
+
+  Future markAttendance(BuildContext context) async {
+    // Map? getLocation =
+    //     await LocationService().initializeAndGetLocation(context);
+    //if (getLocation != null) {
+    if (attendanceModel?.checkIn == null) {
+      await _supabase.from(Constants.attendanceTable).insert({
+        'employee_id': _supabase.auth.currentUser!.id,
+        'date': todayDate,
+        'check_in': DateFormat('HH:mm').format(DateTime.now()),
+        //'check_in_location': getLocation,
+      });
+    } else if (attendanceModel?.checkOut == null) {
+      await _supabase
+          .from(Constants.attendanceTable)
+          .update({
+            'check_out': DateFormat('HH:mm').format(DateTime.now()),
+            // 'check_out_location': getLocation,
+          })
+          .eq('employee_id', _supabase.auth.currentUser!.id)
+          .eq('date', todayDate);
+    } else {
+      if (context.mounted) {
+        Utils.showSnackBar('You have already checked out today !', context);
+      }
+    }
+    getTodayAttendance();
+    //}
   }
 
   Future<List<AttendanceModel>> getAttendanceHistory() async {
