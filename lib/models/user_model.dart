@@ -19,7 +19,8 @@ class UserModel {
       id: data['id'],
       email: data['email'],
       name: data['name'],
-      department: data['department'],
+      //department: data['department'],
+      department: 3,
       employeeId: data['employeeId'],
     );
   }

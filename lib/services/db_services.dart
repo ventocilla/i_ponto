@@ -34,7 +34,7 @@ class DbService extends ChangeNotifier {
     final userData = await _supabase
         .from(Constants.employeeTable)
         .select()
-        .eq("id", _supabase.auth.currentUser!.id)
+        .eq('íd', _supabase.auth.currentUser!.id)
         .single();
     userModel = UserModel.fromJson(userData);
     print('UserModel: ${userModel!}');
