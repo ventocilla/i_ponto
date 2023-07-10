@@ -50,13 +50,19 @@ class DbService extends ChangeNotifier {
 
   Future<UserModel> getUserData() async {
     print('ID: ${_supabase.auth.currentUser!.id}');
+
+    ///*
     final userData = await _supabase
         .from(Constants.employeeTable)
         .select()
-        .eq('íd', _supabase.auth.currentUser!.id)
+        //.eq('íd', _supabase.auth.currentUser!.id)
+        //.eq('name', "Leo Vento")
         .single();
+    //*/
+    //final userData = {'id': '10379f59-e5b0-46a2-bcd4-8adb9a9934b3'};
+    //print('userData: $userData');
     userModel = UserModel.fromJson(userData);
-    //print('UserModel: ${userModel!}');
+    //print('UserModel: ${userModel}');
 
     // Since this function can be called muliple times, then it will reset the department value
     // Tha is why we are using condition to assigyn only at the fisrt time
@@ -93,4 +99,6 @@ class DbService extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // @ 2:41
 }
